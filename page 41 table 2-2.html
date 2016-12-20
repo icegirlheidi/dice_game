@@ -1,0 +1,100 @@
+<html>
+    <head>
+        <title>throw one dice</title>
+        <canvas id="canvas" width="400" height=300>Your browser doesn't support html5 canvas</canvas>
+    </head>
+    <body onload="init();">
+        <script>
+            var dicewidth=100;
+            var diceheight=100;
+            var dicex=50;//beginning point of dice (x)
+            var dicey=50;//beginning point of dice (y)
+            var dotrad=6;//dice point radius
+            var ctx=document.getElementById("canvas").getContext("2d"); //If you put this line into drawface function, you should remove "var".
+            function init() {
+                var ch=1+Math.floor(Math.random()*6);//get full number from 1 to 6 randomly.
+                drawface(ch);
+            }
+            function drawface(n) {
+                ctx.lineWidth=5;
+                ctx.clearRect(dicex,dicey,dicewidth,diceheight);//it doesn't affect the very first time, but you need to clean it when you throw the dice again.
+                ctx.strokeRect(dicex,dicey,dicewidth,diceheight);//draw the rectangle frame of dice.
+                ctx.fillStyle="#009966";
+                switch(n) {
+                    case 1: draw1();
+                        break;
+                    case 2: draw2();
+                        break;
+                    case 3: draw1();//draw one point in the center of dice
+                            draw2();//draw two points, one in left up-side corner, one in right bottom-side corner. 
+                        break;
+                    case 4: draw4();
+                        break;
+                    case 5: draw4();//draw four points, each in the corner.
+                            draw1();//draw one in the center
+                        break;
+                    case 6: draw4();
+                            draw2mid();
+                        break;
+                }
+            }
+            function draw1() {
+                ctx.beginPath();
+                var dotx=dicex+0.5*dicewidth;
+                var doty=dicey+0.5*diceheight;
+                ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
+                ctx.closePath();
+                ctx.fill();
+            }
+            function draw2() {
+                ctx.beginPath();
+                var dotx=dicex+3*dotrad;
+                var doty=dicey+3*dotrad;
+                ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
+                ctx.closePath();
+                ctx.fill();
+                ctx.beginPath();
+                var dotx=dicex+dicewidth-3*dotrad;
+                var doty=dicey+diceheight-3*dotrad;
+                ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
+                ctx.closePath();
+                ctx.fill();
+            }
+            
+            function draw4() { //I met problem in this function. Have a look at it again!
+                ctx.beginPath();
+                var dotx=dicex+3*dotrad;
+                var doty=dicey+3*dotrad;
+                ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
+                var dotx=dicex+dicewidth-3*dotrad;
+                var doty=dicey+diceheight-3*dotrad;
+                ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
+                ctx.closePath();
+                ctx.fill();
+                ctx.beginPath();
+                var dotx=dicex+dicewidth-3*dotrad;
+                var doty=dicey+3*dotrad;
+                ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
+                var dotx=dicex+3*dotrad;
+                var doty=dicey+diceheight-3*dotrad;
+                ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
+                ctx.closePath();
+                ctx.fill();
+            }
+            
+            function draw2mid(){
+               var dotx;
+               var doty;
+               ctx.beginPath();
+               dotx=dicex+3*dotrad;
+               doty=dicey+.5*diceheight;
+               ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
+               dotx=dicex+dicewidth-3*dotrad;
+               doty=dicey+.5*diceheight;
+               ctx.arc(dotx,doty,dotrad,0,Math.PI*2,true);
+               ctx.closePath();
+               ctx.fill();
+            }
+        </script>
+    </body>
+</html>
